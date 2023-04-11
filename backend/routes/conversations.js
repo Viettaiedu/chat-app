@@ -1,7 +1,8 @@
-const express = require('express')
-const {getConversation , addConversation} = require('../controllers/conversation');
+const express = require('express');
+const { verify } = require('../middlewares/verify');
+const {getConversations , addConversation} = require('../controllers/conversation');
 const router = express.Router();
-router.get('' , getConversation)
+router.get('' , verify , getConversations)
 router.post('' , addConversation)
 
 module.exports = router;

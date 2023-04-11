@@ -1,18 +1,26 @@
-
-
 const Conversation = require("../models/conversation");
 
-const getConversation = async (req, res) => {
-    const data = await Conversation.find({});
-    res.json(data);
+const getConversations = async (req, res) => {
+  try {
+    const data = await Conversation.find({
+      members: { $in: [req.userInfo._id] },
+    });
+    return res.status(201).json(data);
+  } catch (e) {
+    res.status(500).json(e);
+  }
 };
 
-const addConversation = async (req,res) => {
-    const members = req.body.members;
-    const newConversation = new Conversation({members});
+const addConversation = async (req, res) => {
+  const members = req.body.members;
+  const newConversation = new Conversation({ members });
+  try  {
     const data = await newConversation.save();
     res.json(data);
-}
+  }catch(e) {
+    res.status(500).json(e);
+  }
+  
+};
 
-
-module.exports = { getConversation ,addConversation};
+module.exports = { getConversations, addConversation };
